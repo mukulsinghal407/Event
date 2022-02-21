@@ -1,0 +1,151 @@
+const express = require('express');
+const ejs = require('ejs');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+const riddles = [];
+var alpha = 0;
+
+mongoose.connect("mongodb://localhost:27017/saic",{
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+});
+
+//Setting things up
+const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(__dirname + "/public"));
+app.set("view engine", "ejs");
+
+const individual = {
+  name: String,
+  phone:String,
+  email:String,
+  roll: String,
+};
+
+const user = new mongoose.Schema({
+  teamName:{type:String,required:true},
+  password:{type:String,required:true},
+  teamMember1:{type:individual,required:true},
+  teamMember2:{type:individual,required:true},
+  teamMember3:{type:individual,required:true},
+  teamMember4:{type:individual},
+  alpha:{type:Number},
+  location:Number,
+  time:[{type:String}]
+});
+
+const users = mongoose.model("debug",user);
+
+app.get("/",(req,res)=>
+{
+    res.render("register");
+});
+
+app.get("/qr/:no",(req,res)=>
+{
+    res.render("form",{info:req.params.no});
+});
+
+app.post("/",function(req,res){
+    const teamMember1 = {
+      name:req.body.teamMember1Name,
+      phone:req.body.teamMember1Phone,
+      email:req.body.teamMember1Email,
+      roll:req.body.teamMember1Roll
+    };
+    const teamMember2 = {
+      name:req.body.teamMember2Name,
+      phone:req.body.teamMember2Phone,
+      email:req.body.teamMember2Email,
+      roll:req.body.teamMember2Roll
+    };  
+    const teamMember3 = {
+      name:req.body.teamMember3Name,
+      phone:req.body.teamMember3Phone,
+      email:req.body.teamMember3Email,
+      roll:req.body.teamMember3Roll
+    };
+    const teamMember4 = {
+        name:req.body.teamMember4Name,
+        phone:req.body.teamMember4Phone,
+        email:req.body.teamMember4Email,
+        roll:req.body.teamMember4Roll
+    };
+    alpha = (alpha)%4;
+    let loc = 0;
+    switch(aplha)
+    {
+        case 0:loc=0;break;
+        case 1:loc=5;break;
+        case 2:loc=10;break;
+        case 3:loc=15;break;
+    }
+    const tempUser=new users({
+      teamName:req.body.teamName,
+      password:req.body.password,
+      teamMember1:teamMember1,
+      teamMember2:teamMember2,
+      teamMember3:teamMember3,
+      teamMember4:teamMember4,
+      alpha:alpha,
+      location:loc,
+      time:[]
+    });
+    alpha+=1;
+    users.findOne({teamName:req.body.teamName},(err,result)=>
+    {
+      if(!err)
+      {
+        if(result)
+        {
+          alert("The Team Name Already Exists");
+        }
+        else
+        {
+          tempUser.save((err)=>
+          {
+            if(!err) 
+            {
+              console.log("Success");
+              res.send("clue",{info:riddles[loc]});
+            }
+            else res.render("error");
+          });
+        }
+      }
+      else
+      {
+        res.render("error");
+      }
+    });
+});
+
+app.post("/qr/:no",(req,res)=>
+{
+    users.findOne({teamName:req.body.name},(err,result)=>
+    {
+        if((result.location+1) === req.params.no)
+        {
+            var date = new Date;
+            date = date.toTimeString();
+            users.findOneAndUpdate({teamName:req.body.name},{location:req.params.no, $push:{time:date}},(err)=>{
+                if(err)
+                {
+                    res.send("error");
+                }   
+            });
+            res.render("clue",{info:riddles[no]});
+        }
+        else
+        {
+            alert("Wrong Location!!");
+            res.render("clue",{info:riddles[result.location]});
+        }
+    }); 
+});
+
+app.listen(3000,()=>{
+    console.log("Server Started at 3000");
+});
