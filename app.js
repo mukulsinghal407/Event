@@ -2,6 +2,7 @@ const express = require('express');
 const ejs = require('ejs');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const alert = require('alert');
 
 const riddles = [];
 var alpha = 0;
@@ -75,7 +76,7 @@ app.post("/",function(req,res){
     };
     alpha = (alpha)%4;
     let loc = 0;
-    switch(aplha)
+    switch(alpha)
     {
         case 0:loc=0;break;
         case 1:loc=5;break;
@@ -100,7 +101,7 @@ app.post("/",function(req,res){
       {
         if(result)
         {
-          alert("The Team Name Already Exists");
+          alert("The Team Name Already Exists"); 
           res.redirect("/");
         }
         else
@@ -110,7 +111,7 @@ app.post("/",function(req,res){
             if(!err) 
             {
               console.log("Success");
-              res.send("clue",{info:riddles[loc]});
+              res.render("clue",{info:riddles[loc]});
             }
             else res.render("error");
           });
@@ -123,27 +124,34 @@ app.post("/",function(req,res){
     });
 });
 
-app.post("/qr/:no",(req,res)=>
+app.post("/qr/:number",(req,res)=>
 {
     users.findOne({teamName:req.body.name},(err,result)=>
     {
-        if((result.location+1) === req.params.no)
-        {
-            var date = new Date;
-            date = date.toTimeString();
-            users.findOneAndUpdate({teamName:req.body.name},{location:req.params.no, $push:{time:date}},(err)=>{
-                if(err)
-                {
-                    res.send("error");
-                }   
-            });
-            res.render("clue",{info:riddles[no]});
-        }
-        else
-        {
-          alert("Wrong Location!!");
-          res.render("clue",{info:riddles[result.location]});
-        }
+      if(!err)
+      {
+        if((result.location+1) === parseInt(req.params.number))
+          {
+              var date = new Date;
+              date = date.toTimeString();
+              users.findOneAndUpdate({teamName:req.body.name},{location:parseInt(req.params.number), $push:{time:date}},(err)=>{
+                  if(err)
+                  {
+                      res.send("error");
+                  }
+              });
+              res.render("clue",{info:riddles[parseInt(req.params.number)]});
+          }
+          else
+          {
+            alert("Wrong Location!!");
+            res.render("clue",{info:riddles[result.location]});
+          }
+      }
+      else
+      {
+        res.send("error");
+      }
     }); 
 });
 
