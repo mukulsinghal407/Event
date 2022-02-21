@@ -40,12 +40,12 @@ const users = mongoose.model("debug",user);
 
 app.get("/",(req,res)=>
 {
-    res.render("register");
+  res.render("register");
 });
 
 app.get("/qr/:no",(req,res)=>
 {
-    res.render("form",{info:req.params.no});
+  res.render("form",{info:req.params.no});
 });
 
 app.post("/",function(req,res){
@@ -101,6 +101,7 @@ app.post("/",function(req,res){
         if(result)
         {
           alert("The Team Name Already Exists");
+          res.redirect("/");
         }
         else
         {
@@ -140,8 +141,8 @@ app.post("/qr/:no",(req,res)=>
         }
         else
         {
-            alert("Wrong Location!!");
-            res.render("clue",{info:riddles[result.location]});
+          alert("Wrong Location!!");
+          res.render("clue",{info:riddles[result.location]});
         }
     }); 
 });
