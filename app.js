@@ -27,7 +27,6 @@ const individual = {
 
 const user = new mongoose.Schema({
   teamName:{type:String,required:true},
-  password:{type:String,required:true},
   teamMember1:{type:individual,required:true},
   teamMember2:{type:individual,required:true},
   teamMember3:{type:individual,required:true},
@@ -85,7 +84,6 @@ app.post("/",function(req,res){
     }
     const tempUser=new users({
       teamName:req.body.teamName,
-      password:req.body.password,
       teamMember1:teamMember1,
       teamMember2:teamMember2,
       teamMember3:teamMember3,
