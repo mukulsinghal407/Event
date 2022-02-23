@@ -7,10 +7,10 @@ const alert = require('alert');
 const riddles = [];
 var alpha = 0;
 
-mongoose.connect("mongodb://localhost:27017/saic",{
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-});
+// mongoose.connect("mongodb://localhost:27017/saic",{
+//   useUnifiedTopology: true,
+//   useNewUrlParser: true,
+// });
 
 //Setting things up
 const app = express();
