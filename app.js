@@ -185,6 +185,6 @@ app.post("/qr/:number",(req,res)=>
     }); 
 });
 
-app.listen(5000,()=>{
+app.listen(process.env.port||5000,(req,res)=>{
     console.log("Server Started at 3000");
 });
