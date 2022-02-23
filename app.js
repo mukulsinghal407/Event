@@ -38,7 +38,7 @@ const user = new mongoose.Schema({
   time:[{type:String}]
 });
 
-const users = mongoose.model("debug",user);
+const users = mongoose.model("users",user);
 
 app.get("/",(req,res)=>
 {
