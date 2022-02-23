@@ -45,16 +45,17 @@ app.get("/",(req,res)=>
   res.render("register");
 });
 
-app.get("/qr/:no",(req,res)=>
-{
-  res.render("form",{info:req.params.no});
-});
-
 app.get("/login",(req,res)=>
 {
   res.render("clue",{title:"",info:"The Event will start on 27th Feb 2022."});
 //  res.render("login");
 });
+
+app.get("/qr/:no",(req,res)=>
+{
+  res.render("form",{info:req.params.no});
+});
+
 
 app.post("/login",(req,res)=>{
   const user = req.body.name;
