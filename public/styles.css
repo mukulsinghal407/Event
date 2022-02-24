@@ -168,4 +168,6 @@ input.form-control{ background-color: #ffffff08; size: 100%;;
 .registerbtn
 {
 	background-color: #c73225;
+	color:white;
+	font-size:20px !important;
 }

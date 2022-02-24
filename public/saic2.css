@@ -252,3 +252,16 @@ footer
     width: 100%;
     color:#ffffff78;
 }
+.masterlogo
+{
+	height:250px;
+	width:300px;
+}
+
+@media screen and (max-width:600px){
+	.masterlogo
+	{
+	height:150px;
+	width:200px;
+	}
+}

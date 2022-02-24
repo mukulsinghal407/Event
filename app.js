@@ -4,9 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const alert = require('alert');
 
-const riddles = [];
-var alpha = 0;
-
+const riddles = ["Sham ko machi hul chal me Din ki tadakti dhoop me Subah ko lagti bhook me  uss jagah ke khajane me Main hun chupa"];
 mongoose.connect("mongodb+srv://saic:saic@cluster0.vqpjs.mongodb.net/saic",{
   useUnifiedTopology: true,
   useNewUrlParser: true,
@@ -26,6 +24,10 @@ const individual = {
   year:String
 };
 
+const count = new mongoose.Schema({
+  count:Number
+});
+
 const user = new mongoose.Schema({
   teamName:{type:String,required:true},
   password:{type:String,required:true},
@@ -39,42 +41,44 @@ const user = new mongoose.Schema({
 });
 
 const users = mongoose.model("users",user);
+const alpha = mongoose.model("count",count);
 
 app.get("/",(req,res)=>
 {
-  res.render("register");
+  res.render("test");
 });
 
 app.get("/login",(req,res)=>
 {
-  res.render("clue",{title:"",info:"The Event will start on 27th Feb 2022."});
-//  res.render("login");
+  // res.render("clue",{title:"",info:"The Event will start on 27th Feb 2022."});
+ res.render("login");
 });
 
 // app.get("/qr/:no",(req,res)=>
 // {
+//   // res.render("clue",{title:"",info:"The Event will start on 27th Feb 2022."});
 //   res.render("form",{info:req.params.no});
 // });
 
 
-// app.post("/login",(req,res)=>{
-//   const user = req.body.name;
-//   const password = req.body.password;
-//   users.findOne({teamName:user,password:password},(err,result)=>
-//   {
-//     if(!err)
-//     {
-//       if(result)
-//       {
-//         res.render("clue",{title:"Clue",info:riddles[result.loc]});
-//       }
-//     }
-//     else
-//     {
-//       res.render("error");
-//     }
-//   });
-// });
+app.post("/login",(req,res)=>{
+  const user = req.body.name;
+  const password = req.body.password;
+  users.findOne({teamName:user,password:password},(err,result)=>
+  {
+    if(!err)
+    {
+      if(result)
+      {
+        res.render("clue",{title:"Clue",info:riddles[result.loc]});
+      }
+    }
+    else
+    {
+      res.render("error");
+    }
+  });
+});
 
 app.post("/register",function(req,res){
     const teamMember1 = {
@@ -105,52 +109,60 @@ app.post("/register",function(req,res){
         roll:req.body.teamMember4Roll,
         year:req.body.teamMember4Year
     };
-    alpha = (alpha)%4;
-    let loc = 0;
-    switch(alpha)
-    {
-        case 0:loc=0;break;
-        case 1:loc=5;break;
-        case 2:loc=10;break;
-        case 3:loc=15;break;
-    }
-    const tempUser=new users({
-      teamName:req.body.teamName,
-      password:req.body.password,
-      teamMember1:teamMember1,
-      teamMember2:teamMember2,
-      teamMember3:teamMember3,
-      teamMember4:teamMember4,
-      alpha:alpha,
-      location:loc,
-      time:[]
-    });
-    alpha+=1;
-    users.findOne({teamName:req.body.teamName},(err,result)=>
+    alpha.find({},(err,result)=>
     {
       if(!err)
       {
-        if(result)
+        let alloc = (result[0].count)%4;
+        console.log(alloc);
+        let loc = 0;
+        switch(alloc)
         {
-          alert("The Team Name Already Exists"); 
-          res.redirect("/");
+            case 0:loc=0;break;
+            case 1:loc=5;break;
+            case 2:loc=10;break;
+            case 3:loc=15;break;
         }
-        else
+        const tempUser=new users({
+          teamName:req.body.teamName,
+          password:req.body.password,
+          teamMember1:teamMember1,
+          teamMember2:teamMember2,
+          teamMember3:teamMember3,
+          teamMember4:teamMember4,
+          alpha:alloc,
+          location:loc,
+          time:[]
+        });
+        result[0].count= (result[0].count+1)%4;
+        result[0].save();
+        users.findOne({teamName:req.body.teamName},(err,result)=>
         {
-          tempUser.save((err)=>
+          if(!err)
           {
-            if(!err) 
+            if(result)
             {
-              console.log("Success");
-              res.render("clue",{title:"Registration Successful",info:"Successfully Registered"});
+              alert("The Team Name Already Exists"); 
+              res.redirect("/");
             }
-            else res.render("error");
-          });
-        }
-      }
-      else
-      {
-        res.render("error");
+            else
+            {
+              tempUser.save((err)=>
+              {
+                if(!err) 
+                {
+                  console.log("Success");
+                  res.render("clue",{title:"Registration Successful",info:"Successfully Registered"});
+                }
+                else res.render("error");
+              });
+            }
+          }
+          else
+          {
+            res.render("error");
+          }
+        });
       }
     });
 });
