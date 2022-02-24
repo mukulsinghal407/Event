@@ -50,8 +50,8 @@ app.get("/",(req,res)=>
 
 app.get("/login",(req,res)=>
 {
-  // res.render("clue",{title:"",info:"The Event will start on 27th Feb 2022."});
- res.render("login");
+  res.render("clue",{title:"",info:"The Event will start on 27th Feb 2022."});
+//  res.render("login");
 });
 
 // app.get("/qr/:no",(req,res)=>
