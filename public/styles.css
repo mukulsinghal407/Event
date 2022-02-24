@@ -157,6 +157,9 @@ input.form-control{ background-color: #ffffff08; size: 100%;;
 }
 
 @media screen and (max-width:600px){
+	.masterlogo
+	{
 	height:150px;
-	width:
+	width:200px;
+	}
 }
