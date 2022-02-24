@@ -150,7 +150,7 @@ app.post("/register",function(req,res){
                 if(!err) 
                 {
                   console.log("Success");
-                  res.render("clue",{title:"Registration Successful",info:"Successfully Registered"});
+                  res.render("clue",{title:"Registration Successful",info:""});
                 }
                 else res.render("error");
               });
