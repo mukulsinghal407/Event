@@ -18,6 +18,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
+const count = new mongoose.Schema({
+  count:Number
+});
+
 const individual = {
   name: String,
   phone:String,
@@ -39,6 +43,7 @@ const user = new mongoose.Schema({
 });
 
 const users = mongoose.model("users",user);
+const alpha = mongoose.model("count",count);  
 
 app.get("/",(req,res)=>
 {
@@ -77,82 +82,90 @@ app.get("/login",(req,res)=>
 // });
 
 app.post("/register",function(req,res){
-    const teamMember1 = {
-      name:req.body.teamMember1Name,
-      phone:req.body.teamMember1Phone,
-      email:req.body.teamMember1Email,
-      roll:req.body.teamMember1Roll,
-      year:req.body.teamMember1Year
-    };
-    const teamMember2 = {
-      name:req.body.teamMember2Name,
-      phone:req.body.teamMember2Phone,
-      email:req.body.teamMember2Email,
-      roll:req.body.teamMember2Roll,
-      year:req.body.teamMember2Year
-    };  
-    const teamMember3 = {
-      name:req.body.teamMember3Name,
-      phone:req.body.teamMember3Phone,
-      email:req.body.teamMember3Email,
-      roll:req.body.teamMember3Roll,
-      year:req.body.teamMember3Year
-    };
-    const teamMember4 = {
-        name:req.body.teamMember4Name,
-        phone:req.body.teamMember4Phone,
-        email:req.body.teamMember4Email,
-        roll:req.body.teamMember4Roll,
-        year:req.body.teamMember4Year
-    };
-    alpha = (alpha)%4;
-    let loc = 0;
-    switch(alpha)
+  const teamMember1 = {
+    name:req.body.teamMember1Name,
+    phone:req.body.teamMember1Phone,
+    email:req.body.teamMember1Email,
+    roll:req.body.teamMember1Roll,
+    year:req.body.teamMember1Year
+  };
+  const teamMember2 = {
+    name:req.body.teamMember2Name,
+    phone:req.body.teamMember2Phone,
+    email:req.body.teamMember2Email,
+    roll:req.body.teamMember2Roll,
+    year:req.body.teamMember2Year
+  };  
+  const teamMember3 = {
+    name:req.body.teamMember3Name,
+    phone:req.body.teamMember3Phone,
+    email:req.body.teamMember3Email,
+    roll:req.body.teamMember3Roll,
+    year:req.body.teamMember3Year
+  };
+  const teamMember4 = {
+      name:req.body.teamMember4Name,
+      phone:req.body.teamMember4Phone,
+      email:req.body.teamMember4Email,
+      roll:req.body.teamMember4Roll,
+      year:req.body.teamMember4Year
+  };
+  alpha.find({},(err,result)=>
+  {
+    if(!err)
     {
-        case 0:loc=0;break;
-        case 1:loc=5;break;
-        case 2:loc=10;break;
-        case 3:loc=15;break;
-    }
-    const tempUser=new users({
-      teamName:req.body.teamName,
-      password:req.body.password,
-      teamMember1:teamMember1,
-      teamMember2:teamMember2,
-      teamMember3:teamMember3,
-      teamMember4:teamMember4,
-      alpha:alpha,
-      location:loc,
-      time:[]
-    });
-    alpha+=1;
-    users.findOne({teamName:req.body.teamName},(err,result)=>
-    {
-      if(!err)
+      let alloc = (result[0].count)%4;
+      console.log(alloc);
+      let loc = 0;
+      switch(alloc)
       {
-        if(result)
+          case 0:loc=0;break;
+          case 1:loc=5;break;
+          case 2:loc=10;break;
+          case 3:loc=15;break;
+      }
+      const tempUser=new users({
+        teamName:req.body.teamName,
+        password:req.body.password,
+        teamMember1:teamMember1,
+        teamMember2:teamMember2,
+        teamMember3:teamMember3,
+        teamMember4:teamMember4,
+        alpha:alloc,
+        location:loc,
+        time:[]
+      });
+      result[0].count= (result[0].count+1)%4;
+      result[0].save();
+      users.findOne({teamName:req.body.teamName},(err,result)=>
+      {
+        if(!err)
         {
-          alert("The Team Name Already Exists"); 
-          res.redirect("/");
+          if(result)
+          {
+            alert("The Team Name Already Exists"); 
+            res.redirect("/");
+          }
+          else
+          {
+            tempUser.save((err)=>
+            {
+              if(!err) 
+              {
+                console.log("Success");
+                res.render("clue",{title:"Registration Successful",info:"Successfully Registered"});
+              }
+              else res.render("error");
+            });
+          }
         }
         else
         {
-          tempUser.save((err)=>
-          {
-            if(!err) 
-            {
-              console.log("Success");
-              res.render("clue",{title:"Registration Successful",info:"Successfully Registered"});
-            }
-            else res.render("error");
-          });
+          res.render("error");
         }
-      }
-      else
-      {
-        res.render("error");
-      }
-    });
+      });
+    }
+  });
 });
 
 // app.post("/qr/:number",(req,res)=>
