@@ -60,7 +60,7 @@ body {
     padding: 0px 30px 30px;
 }
 .signup-form h2 {
-color: white;
+    color: white;
     font-size: 43px;
     position: relative;
     font-weight: bold;
@@ -71,7 +71,7 @@ color: white;
 .signup-form h2:before, .signup-form h2:after {
 	content: "";
 	height: 2px;
-	width: 30%;
+	width: 10%;
 	background: #d4d4d4;
 	position: absolute;
 	top: 50%;
