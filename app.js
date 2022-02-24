@@ -16,6 +16,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
+const count = new mongoose.Schema({
+  count:Number
+});
+
 const individual = {
   name: String,
   phone:String,
@@ -111,11 +115,9 @@ app.post("/register",function(req,res){
     };
     alpha.find({},(err,result)=>
     {
-      if(!err)
-      {
-        let alloc = (result[0].count)%4;
-        console.log(alloc);
-        let loc = 0;
+      let alloc = (result[0].count)%4;
+      console.log(alloc);
+      let loc = 0;
         switch(alloc)
         {
             case 0:loc=0;break;
@@ -163,7 +165,6 @@ app.post("/register",function(req,res){
             res.render("error");
           }
         });
-      }
     });
 });
 
