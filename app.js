@@ -51,30 +51,30 @@ app.get("/login",(req,res)=>
 //  res.render("login");
 });
 
-app.get("/qr/:no",(req,res)=>
-{
-  res.render("form",{info:req.params.no});
-});
+// app.get("/qr/:no",(req,res)=>
+// {
+//   res.render("form",{info:req.params.no});
+// });
 
 
-app.post("/login",(req,res)=>{
-  const user = req.body.name;
-  const password = req.body.password;
-  users.findOne({teamName:user,password:password},(err,result)=>
-  {
-    if(!err)
-    {
-      if(result)
-      {
-        res.render("clue",{title:"Clue",info:riddles[result.loc]});
-      }
-    }
-    else
-    {
-      res.render("error");
-    }
-  });
-});
+// app.post("/login",(req,res)=>{
+//   const user = req.body.name;
+//   const password = req.body.password;
+//   users.findOne({teamName:user,password:password},(err,result)=>
+//   {
+//     if(!err)
+//     {
+//       if(result)
+//       {
+//         res.render("clue",{title:"Clue",info:riddles[result.loc]});
+//       }
+//     }
+//     else
+//     {
+//       res.render("error");
+//     }
+//   });
+// });
 
 app.post("/register",function(req,res){
     const teamMember1 = {
@@ -155,36 +155,36 @@ app.post("/register",function(req,res){
     });
 });
 
-app.post("/qr/:number",(req,res)=>
-{
-    users.findOne({teamName:req.body.name},(err,result)=>
-    {
-      if(!err)
-      {
-        if((result.location+1) === parseInt(req.params.number))
-          {
-              var date = new Date;
-              date = date.toTimeString();
-              users.findOneAndUpdate({teamName:req.body.name},{location:parseInt(req.params.number), $push:{time:date}},(err)=>{
-                  if(err)
-                  {
-                      res.send("error");
-                  }
-              });
-              res.render("clue",{info:riddles[parseInt(req.params.number)]});
-          }
-          else
-          {
-            alert("Wrong Location!!");
-            res.render("clue",{info:riddles[result.location]});
-          }
-      }
-      else
-      {
-        res.send("error");
-      }
-    }); 
-});
+// app.post("/qr/:number",(req,res)=>
+// {
+//     users.findOne({teamName:req.body.name},(err,result)=>
+//     {
+//       if(!err)
+//       {
+//         if((result.location+1) === parseInt(req.params.number))
+//           {
+//               var date = new Date;
+//               date = date.toTimeString();
+//               users.findOneAndUpdate({teamName:req.body.name},{location:parseInt(req.params.number), $push:{time:date}},(err)=>{
+//                   if(err)
+//                   {
+//                       res.send("error");
+//                   }
+//               });
+//               res.render("clue",{info:riddles[parseInt(req.params.number)]});
+//           }
+//           else
+//           {
+//             alert("Wrong Location!!");
+//             res.render("clue",{info:riddles[result.location]});
+//           }
+//       }
+//       else
+//       {
+//         res.send("error");
+//       }
+//     }); 
+// });
 
 app.listen(process.env.port||5000,(req,res)=>{
     console.log("Server Started at 3000");
