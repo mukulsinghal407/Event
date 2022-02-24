@@ -45,7 +45,7 @@ const alpha = mongoose.model("count",count);
 
 app.get("/",(req,res)=>
 {
-  res.render("test");
+  res.render("register");
 });
 
 app.get("/login",(req,res)=>
