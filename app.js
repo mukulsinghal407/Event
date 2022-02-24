@@ -28,10 +28,6 @@ const individual = {
   year:String
 };
 
-const count = new mongoose.Schema({
-  count:Number
-});
-
 const user = new mongoose.Schema({
   teamName:{type:String,required:true},
   password:{type:String,required:true},
