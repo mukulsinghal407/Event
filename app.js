@@ -122,8 +122,8 @@ app.post("/register",function(req,res){
             case 3:loc=15;break;
         }
         const tempUser=new users({
-          teamName:req.body.teamName,
-          password:req.body.password,
+          teamName:req.body.teamName.trim(),
+          password:req.body.password.trim(),
           teamMember1:teamMember1,
           teamMember2:teamMember2,
           teamMember3:teamMember3,
