@@ -140,8 +140,8 @@ app.post("/register",function(req,res){
           {
             if(result)
             {
-              alert("The Team Name Already Exists"); 
-              res.redirect("/");
+              // alert("The Team Name Already Exists"); 
+              res.render("clue",{title:"Team Name Already Exists",info:"You are requested to try another name for registration."});
             }
             else
             {
