@@ -231,7 +231,7 @@ app.post("/login",(req,res)=>{
         res.render("clue",{title:"Please Try again with correct credentials"});
       }
     }
-    else if(complete(result))
+    else if(result && complete(result))
     {
       res.render("clue",{title:"The Hunt Is Over",info:""})
     }
