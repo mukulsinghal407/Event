@@ -218,6 +218,11 @@ app.post("/login",(req,res)=>{
   const user = req.body.name;
   const password = req.body.password;
   console.log(user+" "+password);
+  // users.find({},(err,result)=>{
+  //   result.forEach(element => {
+  //     element.teamName.upper()
+  //   });
+  // });
   users.findOne({teamName:user,password:password},(err,result)=>
   {
     if(!err && result && !complete(result))
