@@ -220,7 +220,7 @@ app.post("/login",(req,res)=>{
   console.log(user+" "+password);
   users.findOne({teamName:user,password:password},(err,result)=>
   {
-    if(!err && !complete(result))
+    if(!err && result && !complete(result))
     {
       if(result)
       {
