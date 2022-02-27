@@ -196,10 +196,10 @@ const user = new mongoose.Schema({
 const users = mongoose.model("users",user);
 const alpha = mongoose.model("count",count);
 
-// app.get("/",(req,res)=>
-// {
-//   res.render("register");
-// });
+app.get("/",(req,res)=>
+{
+  res.render("clue",{title:"",info:"The Registrations Has ended"});
+});
 
 app.get("/login",(req,res)=>
 {
