@@ -207,11 +207,11 @@ app.get("/login",(req,res)=>
  res.render("login");
 });
 
-// app.get("/qr/:no",(req,res)=>
-// {
-//   // res.render("clue",{title:"",info:"The Event will start on 27th Feb 2022."});
-//   res.render("form",{info:req.params.no});
-// });
+app.get("/:no",(req,res)=>
+{
+  // res.render("clue",{title:"",info:"The Event will start on 27th Feb 2022."});
+  res.render("form",{title:"",info:req.params.no});
+});
 
 
 app.post("/login",(req,res)=>{
@@ -323,37 +323,52 @@ app.post("/register",function(req,res){
     });
 });
 
-// app.post("/qr/:number",(req,res)=>
-// {
-//     users.findOne({teamName:req.body.name},(err,result)=>
-//     {
-//       if(!err)
-//       {
-//         if((result.location+1) === parseInt(req.params.number))
-//           {
-//               var date = new Date;
-//               date = date.toTimeString();
-//               users.findOneAndUpdate({teamName:req.body.name},{location:parseInt(req.params.number), $push:{time:date}},(err)=>{
-//                   if(err)
-//                   {
-//                       res.send("error");
-//                   }
-//               });
-//               res.render("clue",{info:riddles[parseInt(req.params.number)]});
-//           }
-//           else
-//           {
-//             alert("Wrong Location!!");
-//             res.render("clue",{info:riddles[result.location]});
-//           }
-//       }
-//       else
-//       {
-//         res.send("error");
-//       }
-//     }); 
-// });
-
+app.post("/:number",(req,res)=>
+{  
+  var date = new Date;
+  date = date.toTimeString(); 
+  users.findOne({teamName:req.body.name},(err,result)=>
+    {
+      const placenumber = value(req.params.number);
+      if(!err && !complete(result))
+      {
+        console.log(result.location);
+        console.log(placenumber);
+        if(result.location!=placenumber)
+        {
+          res.render("clue",{title:"Wrong Location!!",info:""});
+        }
+        else
+        {
+          switch(result.alpha)
+          {
+            case 0:{
+              if(req.params.number==="M" && result.location===4)
+               res.render("clue",{title:"The Hunt Has Succeeded !!",info:""});
+              else 
+               res.render("test",{title:"Clue",array:raste[result.location+1]});
+            }break;
+            case 1:{
+              req.params.number==="PGwalaArea"&& result.location===9?res.render("clue",{title:"The Hunt Has Succeeded !!",info:""}):res.render("test",{title:"Clue",array:raste[result.location+1]});
+            }break;
+            case 2:{
+              req.params.number==="TAN" && result.location===14?res.render("clue",{title:"The Hunt Has Succeeded !!",info:""}):res.render("test",{title:"Clue",array:raste[result.location+1]});
+            }break;
+            case 3:{
+              req.params.number==="FBlockEnt" && result.location===19?res.render("clue",{title:"The Hunt Has Succeeded !!",info:""}):res.render("test",{title:"Clue",array:raste[result.location+1]});
+            }break;
+          }         
+          result.location+=1;
+          result.time.push(date);
+          result.save();
+        }
+      }
+      else if(complete(result))
+       res.render("clue",{title:"The Hunt Is Over",info:""});
+      else
+        res.send("error");
+    }); 
+});
 app.listen(process.env.PORT||3000,(req,res)=>{
     console.log("Server Started at 3000");
 });
