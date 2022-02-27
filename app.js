@@ -196,10 +196,10 @@ const user = new mongoose.Schema({
 const users = mongoose.model("users",user);
 const alpha = mongoose.model("count",count);
 
-app.get("/",(req,res)=>
-{
-  res.render("register");
-});
+// app.get("/",(req,res)=>
+// {
+//   res.render("register");
+// });
 
 app.get("/login",(req,res)=>
 {
@@ -218,11 +218,6 @@ app.post("/login",(req,res)=>{
   const user = req.body.name;
   const password = req.body.password;
   console.log(user+" "+password);
-  // users.find({},(err,result)=>{
-  //   result.forEach(element => {
-  //     element.teamName.upper()
-  //   });
-  // });
   users.findOne({teamName:user,password:password},(err,result)=>
   {
     if(!err && result && !complete(result))
