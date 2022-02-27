@@ -226,6 +226,10 @@ app.post("/login",(req,res)=>{
         // console.log(result);
         res.render("test",{title:"Clue",array:raste[result.location]});
       }
+      else
+      {
+        res.render("clue",{title:"Please Try again with correct credentials"});
+      }
     }
     else if(complete(result))
     {
