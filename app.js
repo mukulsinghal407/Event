@@ -4,7 +4,158 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const alert = require('alert');
 
-const riddles = ["Sham ko machi hul chal me Din ki tadakti dhoop me Subah ko lagti bhook me  uss jagah ke khajane me Main hun chupa"];
+function value(a)
+{
+ for(let i=0;i<20;++i)
+ {
+   if(a===locations[i])
+    return i;
+ }
+}
+
+function complete(a)
+{
+  switch(a.alpha)
+  {
+    case 0: return a.location===4;
+    case 1: return a.location===9;
+    case 2: return a.location===14;
+    case 3: return a.location===19;
+  }
+}
+
+const raste = [
+  [
+    "Ho rahi jaha sadak khatam",
+    "Hun main akela ekdum",
+    "Tandrusti aur maze jaha hai hathon hath",
+    "Rahenge rishte yeh hamesha hamare saath"
+  ],
+  [
+    "Aage chaon piche khai",
+    "Kabhi yaha bhi rehte the sab bhai",
+    "Konsi hai yeh jagah",
+    "Jaha ghar jesa tha sama"
+  ],
+  [
+    "Shyam ko machi hulchul mai",
+    "Din ki tadakti dhoop mai",
+    "Subah ko lagti bhook mai",
+    "uss jagah ke khajane mai",
+    "Main hun chupa"
+  ],
+  [
+    "Ek bada sa maidan hai",
+    "Jitna door utna  hi paas hai",
+    "Shyam mai kai log dikhte hai yahan",
+    "Paseene mai lathpath log daudte hai jaha"
+  ],
+  [
+    "Naya hai yeh raasta",
+    "Jaata hai kahan kya pata",
+    "Nazar hamesha hai tum par",
+    "Hariyali har jagah hai yaha"
+  ],
+  [
+    "To a new beginning which comes second,",
+    "Engraved with Stories of the past which have come to an end.",
+    "Building things from the scratch,",
+    "looking for new memories to attach."
+  ],
+  [
+   "If you ask about its length , It's about nine-tenths as long as Baseball base distance,",
+   "To conquer the flag of victory here , you need a lot of  persistence.",
+   "Dodging a hurdle as long as a baseball bat determines you score in this game,",
+   "But at the end you win your claim."
+  ],
+  [
+    "It is an isolated region with nothing to explore,",
+    "But you find its residents always trying to implore.",
+    "It has a view which represents the indian pride,",
+    "But you need to wonder if the ball went offside ?"
+  ],
+  [
+    "Here the adrenaline rush decides the success ,",
+    "But losing here will never cause you distress .",
+    "Your aim here is to always win ,",
+    "But after every victory you just begin !"
+  ],
+  [
+    "The evenings here are relatively darker,",
+    "But it is just an empty path near a quarter.",
+    "It was once a haunted lane,",
+    "But you can never find its ghost until you try again."
+  ],
+  [
+    "Thapar ke andar hai bhi par rehta sabse alag hai,",
+    "Iske gate se pehli baar aadha thapar nikla bahar hai.",
+    "Aage jungle, peeche taaren, daye me bacche toh baye me basa professors ka ghar baar hai.",
+    "Bas jao yaha, iske gate pr tumhare doosri manzil hai."
+  ],
+  [
+    "Iss jaga ke kya hi kahne,",
+    "Choti si jagah hai",
+    "Kisse hai rangeen yaha ke,",
+    "Rangeen patthro se likha hai iska naam,",
+    "Paas me tanga hai tumhare is paheli ka anjaam"
+  ],
+  [
+    "Ek taraf mor naache",
+    "Ek tarah bachhe bhaage",
+    "Anjaana rasta kuchh log hi jaane",
+    "Chotta hi hai raah",
+    "Socho kaunsi hai jagah"
+  ],
+  [
+    "Ek chota raasta hai,",
+    "Kuch logo ko anjaan , kuch logo ki roj ki daastan hai",
+    "Do deewar hai",
+    "Ek seedhi khadi toh doosri uske samne ladi  hai",
+    "Uss deewar ko khojo, wahi tunhari manzil padi hai."
+  ],
+  [
+    "Kahi logon ke liye aage hai jannat",
+    "Kahi ke liye peeche",
+    "Kahi sawalon ke jawaab hai yahan",
+    "Kahi pahunchna yahan se asaan",
+    "Iska dar bhi alag hi hai  jisse dhoop me na chale kai insaan",
+    "Socho kaunsi jagah"
+  ],
+  [
+    "Life is a race",
+    "You need to follow the teacher’s path",
+    "Living under the same reign",
+    "may lead you somewhere not too far"
+  ],
+  [
+    "You may or may not have to search",
+    "Very long or far",
+    "This is where you keep",
+    "The recently made red art"
+  ],
+  [
+    "Chalte hai affair bohot",
+    "Upar lover",
+    "Neeche maut",
+    "You will regret going here a lot"
+  ],
+  [
+    "Are you getting hungry",
+    "It’s time to eat",
+    "Budget is not a problem",
+    "Just fulfill your feast"
+  ],
+  [
+    "If you find me you win this bet",
+    "But just another alphabet",
+    "I have a brother",
+    "Having genes from octagonal mother"
+  ]
+];
+
+const locations=["KHostel","FRDE","Cossbi","fete","M","Bgate","TennisCourt","Khostel","SportsComplex","PGwalaArea","PolytechnicGate","LHostel","CORE","GHostelWall","TAN","FacultyResidenceLib","TSLASGate","DOSAOff","GBlockGate","FBlockEnt"];
+
+
 mongoose.connect("mongodb+srv://saic:saic@cluster0.vqpjs.mongodb.net/saic",{
   useUnifiedTopology: true,
   useNewUrlParser: true,
@@ -50,32 +201,38 @@ app.get("/",(req,res)=>
 
 app.get("/login",(req,res)=>
 {
-  res.render("clue",{title:"",info:"The Event will start on 27th Feb 2022."});
-//  res.render("login");
+  // res.render("clue",{title:"",info:"The Event will start on 27th Feb 2022."});
+ res.render("login");
 });
 
-// app.get("/qr/:no",(req,res)=>
-// {
-//   // res.render("clue",{title:"",info:"The Event will start on 27th Feb 2022."});
-//   res.render("form",{info:req.params.no});
-// });
+app.get("/:no",(req,res)=>
+{
+  // res.render("clue",{title:"",info:"The Event will start on 27th Feb 2022."});
+  res.render("form",{title:"",info:req.params.no});
+});
 
 
 app.post("/login",(req,res)=>{
   const user = req.body.name;
   const password = req.body.password;
+  console.log(user+" "+password);
   users.findOne({teamName:user,password:password},(err,result)=>
   {
-    if(!err)
+    if(!err && complete(result)==False)
     {
       if(result)
       {
-        res.render("clue",{title:"Clue",info:riddles[result.loc]});
+        // console.log(result);
+        res.render("test",{title:"Clue",array:raste[result.location]});
       }
+    }
+    else if(complete(result))
+    {
+      res.render("clue",{title:"The Hunt Is Over",info:""})
     }
     else
     {
-      res.render("error");
+      res.send("error");
     }
   });
 });
@@ -164,36 +321,52 @@ app.post("/register",function(req,res){
     });
 });
 
-// app.post("/qr/:number",(req,res)=>
-// {
-//     users.findOne({teamName:req.body.name},(err,result)=>
-//     {
-//       if(!err)
-//       {
-//         if((result.location+1) === parseInt(req.params.number))
-//           {
-//               var date = new Date;
-//               date = date.toTimeString();
-//               users.findOneAndUpdate({teamName:req.body.name},{location:parseInt(req.params.number), $push:{time:date}},(err)=>{
-//                   if(err)
-//                   {
-//                       res.send("error");
-//                   }
-//               });
-//               res.render("clue",{info:riddles[parseInt(req.params.number)]});
-//           }
-//           else
-//           {
-//             alert("Wrong Location!!");
-//             res.render("clue",{info:riddles[result.location]});
-//           }
-//       }
-//       else
-//       {
-//         res.send("error");
-//       }
-//     }); 
-// });
+app.post("/:number",(req,res)=>
+{  
+  var date = new Date;
+  date = date.toTimeString(); 
+  users.findOne({teamName:req.body.name},(err,result)=>
+    {
+      const placenumber = value(req.params.number);
+      if(!err && !complete(result))
+      {
+        console.log(result.location);
+        console.log(placenumber);
+        if(result.location!=placenumber)
+        {
+          res.render("clue",{title:"Wrong Location!!",info:""});
+        }
+        else
+        {
+          switch(result.alpha)
+          {
+            case 0:{
+              if(req.params.number==="M" && result.location===4)
+               res.render("clue",{title:"The Hunt Has Succeeded !!",info:""});
+              else 
+               res.render("test",{title:"Clue",array:raste[result.location+1]});
+            }break;
+            case 1:{
+              req.params.number==="PGwalaArea"&& result.location===9?res.render("clue",{title:"The Hunt Has Succeeded !!",info:""}):res.render("test",{title:"Clue",array:raste[result.location+1]});
+            }break;
+            case 2:{
+              req.params.number==="TAN" && result.location===14?res.render("clue",{title:"The Hunt Has Succeeded !!",info:""}):res.render("test",{title:"Clue",array:raste[result.location+1]});
+            }break;
+            case 3:{
+              req.params.number==="FBlockEnt" && result.location===19?res.render("clue",{title:"The Hunt Has Succeeded !!",info:""}):res.render("test",{title:"Clue",array:raste[result.location+1]});
+            }break;
+          }         
+          result.location+=1;
+          result.time.push(date);
+          result.save();
+        }
+      }
+      else if(complete(result))
+       res.render("clue",{title:"The Hunt Is Over",info:""});
+      else
+        res.send("error");
+    }); 
+});
 
 app.listen(process.env.PORT||3000,(req,res)=>{
     console.log("Server Started at 3000");
