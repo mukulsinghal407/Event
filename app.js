@@ -162,7 +162,6 @@ const raste = [
 const locations=["KHostel","FRDE","Cossbi","fete","M","Bgate","TennisCourt","Khostel","SportsComplex","PGwalaArea","PolytechnicGate","LHostel","CORE","GHostelWall","TAN","FacultyResidenceLib","TSLASGate","DOSAOff","GBlockGate","FBlockEnt"];
 
 
-
 //Setting things up
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
