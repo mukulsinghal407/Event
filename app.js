@@ -369,5 +369,5 @@ app.post("/:number",(req,res)=>
 });
 
 app.listen(process.env.PORT||3000,(req,res)=>{
-    console.log("Server Started at 3000");
+  console.log("Server Started at 3000");
 });
