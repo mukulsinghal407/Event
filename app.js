@@ -210,7 +210,7 @@ app.get("/login",(req,res)=>
 app.get("/:no",(req,res)=>
 {
   // res.render("clue",{title:"",info:"The Event will start on 27th Feb 2022."});
-  res.render("form",{title:"",info:req.params.no});
+  res.render("form",{title:"checkpoint",info:req.params.no});
 });
 
 
