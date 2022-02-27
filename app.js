@@ -32,10 +32,10 @@ function complete(a)
 
 const raste = [
   [
-    "Ho rahi jaha sadak khatam",
-    "Hun main akela ekdum",
-    "Tandrusti aur maze jaha hai hathon hath",
-    "Rahenge rishte yeh hamesha hamare saath"
+    "Cricket ki duniya ke peeche basa ek sansaar hai",
+    "Jaha logo ke kaam se jyada, logo ke karnamo ka vivaad hai",
+    "Raaste kai hote hai khatam wahan,",
+    "Patthar laga kar, taron ke neeche se, log bante waha kharidaar hai."
   ],
   [
     "Aage chaon piche khai",
@@ -59,7 +59,7 @@ const raste = [
   [
     "Naya hai yeh raasta",
     "Jaata hai kahan kya pata",
-    "Nazar hamesha hai tum par",
+    "Bagal mein hai 5 star hotel",
     "Hariyali har jagah hai yaha"
   ],
   [
@@ -72,7 +72,7 @@ const raste = [
    "If you ask about its length , It's about nine-tenths as long as Baseball base distance,",
    "To conquer the flag of victory here , you need a lot of  persistence.",
    "Dodging a hurdle as long as a baseball bat determines you score in this game,",
-   "But at the end you win your claim."
+   "In a game of 15-30-40 you make your name."
   ],
   [
     "It is an isolated region with nothing to explore,",
